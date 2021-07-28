@@ -1,0 +1,52 @@
+[
+   {
+      "time":1800,
+      "label":"0.5 hours",
+      "rate":273
+   },
+   {
+      "time":3600,
+      "label":"1 hour",
+      "rate":493
+   },
+   {
+      "time":7200,
+      "label":"2 hours",
+      "rate":755
+   },
+   {
+      "time":10800,
+      "label":"3 hours",
+      "rate":998
+   },
+   {
+      "time":21600,
+      "label":"6 hours",
+      "rate":1242
+   },
+   {
+      "time":43200,
+      "label":"12 hours / 0.5 day",
+      "rate":2033
+   },
+   {
+      "time":86400,
+      "label":"24 hours / 1 day",
+      "rate":2211
+   },
+   {
+      "time":172800,
+      "label":"48 hours / 2 days",
+      "rate":3249
+   },
+   {
+      "time":259200,
+      "label":"72 hours / 3 days",
+      "rate":4419
+   },
+   {
+      "time":345600,
+      "label":"96 hours / 4 days",
+      "rate":5204
+   }
+]

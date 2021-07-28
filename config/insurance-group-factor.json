@@ -1,0 +1,26 @@
+[
+   {
+      "group":"1-8",
+      "is-eligible":true,
+      "factor":1.000,
+      "label":""
+   },
+   {
+      "group":"9-16",
+      "is-eligible":true,
+      "factor":1.073,
+      "label":""
+   },
+   {
+      "group":"17-35",
+      "is-eligible":true,
+      "factor":1.120,
+      "label":""
+   },
+   {
+      "group":"36",
+      "is-eligible":false,
+      "factor":0,
+      "label":"Decline"
+   }
+]
