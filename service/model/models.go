@@ -18,13 +18,13 @@ type DriverAgeFactor struct {
 
 type InsuranceGroupFactor struct {
   Label string `json:"label"`
-  Group int `json:"group"`
+  Group string `json:"group"`
   IsEligible bool `json:"is-eligible"`
-  factor float64 `json:"factor"`
+  Factor float64 `json:"factor"`
 }
 
 type LicenceValidityFactor struct {
-  Length int `json:"length"`
+  Length string `json:"length"`
   Factor float64 `json:"factor"`
 }
 
