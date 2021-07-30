@@ -4,7 +4,7 @@ package pricingengine
 // inputs that are used to provide pricing for a given user.
 type GeneratePricingRequest struct {
   DateOfBirth string `json:"date_of_birth"`
-  InsuranceGroup string `json:"insurance_group"`
+  InsuranceGroup int `json:"insurance_group"`
   LicenseHeldSince string `json:"license_held_since"`
 }
 
@@ -22,6 +22,6 @@ type GeneratePricingResponse struct {
 // PricingItem - contains the pricing data generated for partucular group based on the request passed
 type PricingItem struct {
 	Premium float64 `json:"premium"`
-  Currency string  `json:"premium"`
+  Currency string  `json:"currency"`
   FareGroup string `json:"fare_group"`
 }
