@@ -35,8 +35,14 @@ func (f *FactorMapper) DriverAgeFactorToRangeConfig(ageFactors []models.DriverAg
   result := []models.RangeConfig{}
   for i:= 0; i < len(ageFactors); i++ {
     curr := ageFactors[i]
-    c_range := models.RangeConfig{Start: prev, End: curr.Age, Label: "Driver Age:"+curr.Label, Value: curr.Factor, IsEligible: curr.IsEligible}
+    c_range := models.RangeConfig{Start: prev, End: curr.Age, Label: "Driver Age:"+strconv.Itoa(prev) +"-"+strconv.Itoa(curr.Age), Value: curr.Factor, IsEligible: curr.IsEligible}
     result = append(result, c_range)
+    if(i == len(ageFactors)-1) {
+      // for last item add boundary range
+      end := int((^uint(0))>> 1) // max int range
+      c_range = models.RangeConfig{Start: curr.Age, End: end, Label: "Driver Age >"+strconv.Itoa(curr.Age), Value: curr.Factor, IsEligible: true}
+      result = append(result, c_range)
+    }
     prev = curr.Age
   }
   return result
@@ -54,7 +60,7 @@ func (f *FactorMapper) InsuranceGroupFactorToRangeConfig(insuranceGroups []model
   	} else {
       end = int((^uint(0))>> 1) // max int range
     }
-    c_range := models.RangeConfig{Start: start, End: end, Label: "Insurance Group:"+curr.Label, Value: curr.Factor, IsEligible: curr.IsEligible}
+    c_range := models.RangeConfig{Start: start, End: end, Label: "Insurance Group:"+curr.Group, Value: curr.Factor, IsEligible: curr.IsEligible}
     result = append(result, c_range)
   }
   return result

@@ -37,7 +37,7 @@ func (s *Strategy) ApplySubsecuentFactorsToPricing(input *pricingengine.Generate
   // just check the base price and
   result.Premium = previousPricingItem.Premium * config.Value
   result.Currency = previousPricingItem.Currency
-  result.FareGroup = previousPricingItem.FareGroup + " " + config.Label
+  result.FareGroup = previousPricingItem.FareGroup + ", " + config.Label
   if fn != nil {
     log.Println("Found a chain function, Passing on the result for further computation")
     return fn(&result)
@@ -50,13 +50,14 @@ func (s *Strategy) FindMatchingDriverAgeFactor(input *pricingengine.GeneratePric
   parse_dob_t,_ := time.Parse("2006-01-02", date_of_birth)
   now := time.Now()
   age := int(now.Sub(parse_dob_t).Hours()/(24*30*12))
+	log.Println("Checking the driver factor for date_of_birth=", date_of_birth, " parse_dob_t=", parse_dob_t, " age=", age)
   for i:= 0; i < len(allDriverAgeFactords); i++ {
 		current := allDriverAgeFactords[i]
     if (current.Start < age && current.End >= age) {
       if (current.IsEligible) {
         return &current, nil
       } else {
-        return &current, errors.New("Not Eligible")
+        return &current, errors.New("Declined due to :"+current.Label)
       }
     }
   }
@@ -71,7 +72,7 @@ func (s *Strategy) FindMatchingInsuranceGroupFactor(input *pricingengine.Generat
       if (current.IsEligible) {
         return &current, nil
       } else {
-        return &current, errors.New("Not Eligible")
+        return &current, errors.New("Declined due to :"+current.Label)
       }
     }
   }
@@ -90,7 +91,7 @@ func (s *Strategy) FindMatchingLicenceValidityFactor(input *pricingengine.Genera
       if (current.IsEligible) {
         return &current, nil
       } else {
-        return &current, errors.New("Not Eligible")
+        return &current, errors.New("Declined due to :"+current.Label)
       }
     }
   }
