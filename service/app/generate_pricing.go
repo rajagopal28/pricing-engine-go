@@ -80,7 +80,7 @@ func (a *App) GeneratePricing(ctx context.Context, request *pricingengine.Genera
 }
 
 // GeneratePricingConfig fetch and cache the configs related to pricing computations
-//
+// Just forms a map[]{} based on the config in the cache
 func (a *App) GeneratePricingConfig(ctx context.Context) (interface{}, error) {
 	log.Println("Entering GeneratePricingConfig")
 	a.Cache.Fetcher = config.ConfigFetcher{Path: "/config/"} // Initialise with actual path
