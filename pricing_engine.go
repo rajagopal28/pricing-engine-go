@@ -13,10 +13,10 @@ type GeneratePricingRequest struct {
 // IsEligible to indicate whether the user is eligible
 // Message to state the reason for thich the Decline has happened
 type GeneratePricingResponse struct {
-	input GeneratePricingRequest
-  IsEligible string `json:"is_eligible"`
+	Input GeneratePricingRequest `json:"input"`
+  IsEligible bool `json:"is-eligible"`
   Message string `json:"message"`
-  pricing_list []PricingItem `json:"pricing"`
+  PricingList []PricingItem `json:"pricing"`
 }
 
 // PricingItem - contains the pricing data generated for partucular group based on the request passed
