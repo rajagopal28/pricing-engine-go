@@ -8,13 +8,15 @@ import (
   "log"
 )
 
-type Config struct{}
+type ConfigFetcher struct{
+  Path string
+}
 
 
-func (a *Config) ReadFileAndGetAsObject(path string, class interface{}) (interface{}, error) {
+func (c *ConfigFetcher) ReadFileAndGetAsObject(filename string, class interface{}) (interface{}, error) {
 	pwd, _ := os.Getwd()
 	log.Print("Current Working Directory: ", pwd)
-  jsonFile, err := os.Open(pwd+path)
+  jsonFile, err := os.Open(pwd+c.Path+filename)
 	// txt, _ := ioutil.ReadFile(pwd+"/path/to/file.txt")
   // if we os.Open returns an error then handle it
 
@@ -22,7 +24,7 @@ func (a *Config) ReadFileAndGetAsObject(path string, class interface{}) (interfa
 			log.Fatalf("error opening file: %v", err)
       return nil, err
   }
-  log.Print("Successfully Opened ", path)
+  log.Print("Successfully Opened ", filename)
   // defer the closing of our jsonFile so that we can parse it later on
   defer jsonFile.Close()
 	byteValue, _ := ioutil.ReadAll(jsonFile)
