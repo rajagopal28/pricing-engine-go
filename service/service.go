@@ -23,5 +23,6 @@ func Start() {
 	}
 
 	r.Post("/generate_pricing", rpc.GeneratePricing)
+	r.Get("/generate_pricing", rpc.GeneratePricingConfig)
 	http.ListenAndServe(":3000", r)
 }

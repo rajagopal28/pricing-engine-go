@@ -48,6 +48,30 @@ func (rpc *RPC) GeneratePricing(w http.ResponseWriter, r *http.Request) {
 	response(w, res)
 }
 
+// GeneratePricingConfig method is a GET method that typically takes care of
+// fetching the current pricing config that is configured
+// This is an informational call that does not change any existing data but
+// to just view the configs based on which the pricing computations are performed
+func (rpc *RPC) GeneratePricingConfig(w http.ResponseWriter, r *http.Request) {
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		response(w, err)
+		return
+	}
+
+	r.Body.Close()
+	r.Body = ioutil.NopCloser(bytes.NewBuffer(body))
+
+	// query := r.URL.Query()
+	// println("query=", query.Get("quer"))
+	res, err := rpc.App.GeneratePricingConfig(r.Context())
+	if err != nil {
+		response(w, err)
+		return
+	}
+	response(w, res)
+}
+
 // response writes a successful response as JSON to the client
 func response(w http.ResponseWriter, res interface{}) {
 	if err, ok := res.(error); ok {

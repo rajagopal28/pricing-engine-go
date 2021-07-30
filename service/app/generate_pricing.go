@@ -78,3 +78,19 @@ func (a *App) GeneratePricing(ctx context.Context, request *pricingengine.Genera
 	log.Println("Leaving GeneratePricing")
 	return &result, nil
 }
+
+// GeneratePricingConfig fetch and cache the configs related to pricing computations
+//
+func (a *App) GeneratePricingConfig(ctx context.Context) (interface{}, error) {
+	log.Println("Entering GeneratePricingConfig")
+	a.Cache.Fetcher = config.ConfigFetcher{Path: "/config/"} // Initialise with actual path
+	a.Cache.InitialiseWithRefresh(false, 100000) // time to live 100000s
+	var result map[string]interface{} = make(map[string]interface{})
+
+	result["base-rate"] = a.Cache.BaseRateList
+	result["driver-age-factor"] = a.Cache.DriverAgeFactorList
+	result["insurance-group-factor"] = a.Cache.InsuranceGroupFactorList
+	result["licence-validity-factor"] = a.Cache.LicenceValidityFactorList
+	log.Println("Leaving GeneratePricingConfig")
+	return result, nil
+}
