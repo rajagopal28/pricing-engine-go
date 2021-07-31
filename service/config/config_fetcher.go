@@ -14,25 +14,25 @@ type ConfigFetcher struct{
 
 
 func (c *ConfigFetcher) ReadFileAndGetAsObject(filename string, class interface{}) (interface{}, error) {
+  log.Println("Entering ReadFileAndGetAsObject")
 	pwd, _ := os.Getwd()
-	log.Print("Current Working Directory: ", pwd)
+	log.Println("Current Working Directory: ", pwd)
   jsonFile, err := os.Open(pwd+c.Path+filename)
 	// txt, _ := ioutil.ReadFile(pwd+"/path/to/file.txt")
   // if we os.Open returns an error then handle it
 
   if err != nil {
-			log.Fatalf("error opening file: %v", err)
+			log.Printf("error opening file: %v", err)
       return nil, err
   }
-  log.Print("Successfully Opened ", filename)
+  log.Println("Successfully Opened ", filename)
   // defer the closing of our jsonFile so that we can parse it later on
   defer jsonFile.Close()
 	byteValue, _ := ioutil.ReadAll(jsonFile)
 
-
 	command := reflect.New(reflect.TypeOf(class))
   json.Unmarshal([]byte(byteValue), command.Interface())
 	result := command.Elem().Interface()
-	println(result)
+  log.Println("Leaving ReadFileAndGetAsObject")
 	return result, nil
 }
