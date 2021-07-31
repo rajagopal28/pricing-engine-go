@@ -1,0 +1,12 @@
+[
+   {
+      "time":1800,
+      "label":"0.5 hours",
+      "rate":273
+   },
+   {
+      "time":345600,
+      "label":"96 hours / 4 days",
+      "rate":5204
+   }
+]
