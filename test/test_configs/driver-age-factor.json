@@ -1,0 +1,14 @@
+[
+   {
+      "age":16,
+      "is-eligible":false,
+      "factor":0,
+      "label":"Decline"
+   },
+   {
+      "age":26,
+      "is-eligible":true,
+      "factor":1.000,
+      "label":""
+   }
+]

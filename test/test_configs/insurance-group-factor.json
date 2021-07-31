@@ -1,0 +1,14 @@
+[
+   {
+      "group":"1-8",
+      "is-eligible":true,
+      "factor":1.000,
+      "label":""
+   },
+   {
+      "group":"8",
+      "is-eligible":false,
+      "factor":0,
+      "label":"Decline"
+   }
+]
