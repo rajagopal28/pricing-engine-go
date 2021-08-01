@@ -3,6 +3,7 @@ package service
 import (
   "testing"
   "fmt"
+  "time"
   "net/http"
   "net/http/httptest"
 	"encoding/json"
@@ -78,9 +79,11 @@ func TestServiceEndpointsIntegrationTestWithActualConfigs(tp *testing.T){
   })
 
   tp.Run("TestRESTAPIEndpointToGetValidGeneratedPriceList-FailureScenario-5", func(t *testing.T) {
-
+    now := time.Now()
+    _t := now.AddDate(-15, 0, 0) //15 years before now
+    dob := _t.Format("2006-01-02")
     request := pricingengine.GeneratePricingRequest{
-      DateOfBirth: "2006-01-02",
+      DateOfBirth: dob,
       InsuranceGroup: 20,
       LicenseHeldSince: "2006-01-02",
     }
@@ -94,11 +97,15 @@ func TestServiceEndpointsIntegrationTestWithActualConfigs(tp *testing.T){
 
 
   tp.Run("TestRESTAPIEndpointToGetValidGeneratedPriceList-SuccessScenario-1", func(t *testing.T) {
-
+    now := time.Now()
+    _t := now.AddDate(-20, 0, 0) //20 years before now
+    dob := _t.Format("2006-01-02")
+    _t = now.AddDate(-7, 0, 0) //7 years before now
+    licence := _t.Format("2006-01-02")
     request := pricingengine.GeneratePricingRequest{
-      DateOfBirth: "2001-01-02",
+      DateOfBirth: dob,
       InsuranceGroup: 7,
-      LicenseHeldSince: "2006-01-02",
+      LicenseHeldSince: licence,
     }
     resp,_ := MakeHttpRequestAndGetResponse(&request)
     println(resp)
@@ -119,10 +126,15 @@ func TestServiceEndpointsIntegrationTestWithActualConfigs(tp *testing.T){
   })
 
   tp.Run("TestRESTAPIEndpointToGetValidGeneratedPriceList-SuccessScenario-2", func(t *testing.T) {
+    now := time.Now()
+    _t := now.AddDate(-20, 0, 0) //20 years before now
+    dob := _t.Format("2006-01-02")
+    _t = now.AddDate(-5, 0, 0) //5 years before now
+    licence := _t.Format("2006-01-02")
     request := pricingengine.GeneratePricingRequest{
-      DateOfBirth: "2001-01-02",
+      DateOfBirth: dob,
       InsuranceGroup: 7,
-      LicenseHeldSince: "2020-01-02",
+      LicenseHeldSince: licence,
     }
     resp,_ := MakeHttpRequestAndGetResponse(&request)
     println(resp)
