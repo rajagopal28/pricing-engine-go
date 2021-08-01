@@ -182,10 +182,10 @@ func MakeHttpRequestAndGetResponse( requestTo  *pricingengine.GeneratePricingReq
 
 
 	if responseRecorder.Code != 200 {
-		println("Want status '%d', got '%d'", 200, responseRecorder.Code)
+		fmt.Printf("Want status '%d', got '%d'", 200, responseRecorder.Code)
 	}
 
-  println("Want '%s', got '%s'", "some", responseRecorder.Body)
+  fmt.Printf("Want '%s', got '%s'", "some", responseRecorder.Body)
 	// if strings.TrimSpace(responseRecorder.Body.String()) != tc.want {
 		// t.Errorf("Want '%s', got '%s'", tc.want, responseRecorder.Body)
 	// }
