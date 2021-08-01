@@ -4,6 +4,7 @@ import (
 	"log"
   "time"
   "errors"
+	"math"
 
 	"pricingengine"
 	"pricingengine/service/model"
@@ -35,7 +36,7 @@ func (s *Strategy) ApplySubsecuentFactorsToPricing(input *pricingengine.Generate
   var result pricingengine.PricingItem =  pricingengine.PricingItem{}
   // for the current BaseRate and GeneratePricingRequest calculate outcome rate
   // just check the base price and
-  result.Premium = previousPricingItem.Premium * config.Value
+  result.Premium = math.Floor(previousPricingItem.Premium * config.Value * 1000)/1000
   result.Currency = previousPricingItem.Currency
   result.FareGroup = previousPricingItem.FareGroup + ", " + config.Label
   if fn != nil {
@@ -61,7 +62,7 @@ func (s *Strategy) FindMatchingDriverAgeFactor(input *pricingengine.GeneratePric
       }
     }
   }
-  return nil, errors.New("not found")
+  return nil, errors.New("MatchingDriverAgeFactor not found!")
 }
 
 func (s *Strategy) FindMatchingInsuranceGroupFactor(input *pricingengine.GeneratePricingRequest, allInsuranceGroupFactors []models.RangeConfig) (*models.RangeConfig, error) {
@@ -76,7 +77,7 @@ func (s *Strategy) FindMatchingInsuranceGroupFactor(input *pricingengine.Generat
       }
     }
   }
-  return nil, errors.New("not found")
+  return nil, errors.New("MatchingInsuranceGroupFactor not found!")
 }
 
 
@@ -95,5 +96,5 @@ func (s *Strategy) FindMatchingLicenceValidityFactor(input *pricingengine.Genera
       }
     }
   }
-  return nil, errors.New("not found")
+  return nil, errors.New("MatchingLicenceValidityFactor not found!")
 }
