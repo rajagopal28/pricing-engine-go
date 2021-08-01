@@ -23,7 +23,7 @@ func TestPriceGenerationAppWithActualConfigs(tp *testing.T){
   }
   tp.Run("TestPriceGenerationAppToGetValidGeneratedPriceList-FailureScenario-1", func(t *testing.T) {
     resp,_ := testApp.GeneratePricing(context.Background(),&pricingengine.GeneratePricingRequest{})
-    println(resp)
+
     util.AssertFalse(resp.IsEligible, t)
     util.AssertEqual(len(resp.PricingList), 0, t)
     util.AssertTrue(len(resp.Message) > 0, t)
@@ -35,7 +35,7 @@ func TestPriceGenerationAppWithActualConfigs(tp *testing.T){
       DateOfBirth: "2006-01-02",
     }
     resp,_ := testApp.GeneratePricing(context.Background(),&request)
-    println(resp)
+
     util.AssertFalse(resp.IsEligible, t)
     util.AssertEqual(len(resp.PricingList), 0, t)
     util.AssertTrue(len(resp.Message) > 0, t)
@@ -49,7 +49,7 @@ func TestPriceGenerationAppWithActualConfigs(tp *testing.T){
       InsuranceGroup: 20,
     }
     resp,_ := testApp.GeneratePricing(context.Background(),&request)
-    println(resp)
+
     util.AssertFalse(resp.IsEligible, t)
     util.AssertEqual(len(resp.PricingList), 0, t)
     util.AssertTrue(len(resp.Message) > 0, t)
@@ -64,7 +64,7 @@ func TestPriceGenerationAppWithActualConfigs(tp *testing.T){
       LicenseHeldSince: "2006-01-02",
     }
     resp,_ := testApp.GeneratePricing(context.Background(),&request)
-    println(resp)
+
     util.AssertFalse(resp.IsEligible, t)
     util.AssertEqual(len(resp.PricingList), 0, t)
     util.AssertTrue(len(resp.Message) > 0, t)
@@ -79,7 +79,7 @@ func TestPriceGenerationAppWithActualConfigs(tp *testing.T){
       LicenseHeldSince: "2006-01-02",
     }
     resp,_ := testApp.GeneratePricing(context.Background(),&request)
-    println(resp)
+
     util.AssertFalse(resp.IsEligible, t)
     util.AssertEqual(len(resp.PricingList), 0, t)
     util.AssertTrue(len(resp.Message) > 0, t)
@@ -95,7 +95,7 @@ func TestPriceGenerationAppWithActualConfigs(tp *testing.T){
       LicenseHeldSince: "2006-01-02",
     }
     resp,_ := testApp.GeneratePricing(context.Background(),&request)
-    println(resp)
+
     util.AssertTrue(resp.IsEligible, t)
     util.AssertEqual(len(resp.PricingList), 2, t)
     util.AssertEqual(resp.Message, "Success", t)
@@ -119,7 +119,7 @@ func TestPriceGenerationAppWithActualConfigs(tp *testing.T){
       LicenseHeldSince: "2020-01-02",
     }
     resp,_ := testApp.GeneratePricing(context.Background(),&request)
-    println(resp)
+
     util.AssertTrue(resp.IsEligible, t)
     util.AssertEqual(len(resp.PricingList), 2, t)
     util.AssertEqual(resp.Message, "Success", t)

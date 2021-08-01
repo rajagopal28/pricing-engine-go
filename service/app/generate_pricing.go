@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"pricingengine"
+	"pricingengine/service/strategy"
 	"pricingengine/service/config"
 )
 
@@ -44,7 +45,7 @@ func (a *App) GeneratePricing(ctx context.Context, request *pricingengine.Genera
 		return &result, nil
 	}
 
-	var strategies = Strategy{}
+	var strategies = strategy.Strategy{}
 	driver_factor_range, err := strategies.FindMatchingDriverAgeFactor(request, a.Cache.DriverAgeFactorList)
 	if(err != nil) {
 		log.Printf("error finding driver_factor_range: %v", err)
@@ -104,7 +105,10 @@ func (a *App) GeneratePricing(ctx context.Context, request *pricingengine.Genera
 // Just forms a map[]{} based on the config in the cache
 func (a *App) GeneratePricingConfig(ctx context.Context) (interface{}, error) {
 	log.Println("Entering GeneratePricingConfig")
-	a.Cache.Fetcher = config.ConfigFetcher{Path: "/config/"} // Initialise with actual path
+	// Initialise with actual path if not present
+	if a.Cache.TimeToLive == 0 {
+		a.Cache.Fetcher = config.ConfigFetcher{Path: "/config/"}
+	}
 	a.Cache.InitialiseWithRefresh(false, 100000) // time to live 100000s
 	var result map[string]interface{} = make(map[string]interface{})
 
