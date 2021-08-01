@@ -55,7 +55,7 @@ func (c *ConfigCache) FetchAndConvertBaseFareList() (error) {
   var temp []models.BaseRate
 	res, err := c.Fetcher.ReadFileAndGetAsObject("base-rate.json" , temp)
 	if err != nil {
-		log.Println("error reading the config file:", err)
+		log.Printf("error reading the config file:", err)
 		return err
 	}
 	// println("result length =", len(result))
