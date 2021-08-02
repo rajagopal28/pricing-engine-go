@@ -1,0 +1,55 @@
+### References:
+- setting up go environment : https://pkg.go.dev/cmd/go
+- go packages : https://medium.com/rungo/everything-you-need-to-know-about-packages-in-go-b8bac62b74cc
+- maps and struts : https://tour.golang.org/moretypes/19
+- getting query params : https://golangbyexample.com/net-http-package-get-query-params-golang/
+- current working directory: https://stackoverflow.com/a/31464648
+- parsing json: https://www.sohamkamani.com/golang/parsing-json/
+- reading json file : https://tutorialedge.net/golang/parsing-json-with-golang/
+- generic struct type parsing unmarshall : https://stackoverflow.com/a/49002939
+- fix for `implicit assignment of unexported field` issue: https://stackoverflow.com/a/48130761
+- logging in go: https://www.loggly.com/use-cases/logging-in-golang-how-to-start/
+- logging in detail: https://www.honeybadger.io/blog/golang-logging/
+- passing functions as parameters: https://stackoverflow.com/a/12655719
+- fixing cast exception from `interface{}` to other `structs array` : https://stackoverflow.com/a/42740448
+- unbounded list creation, updation : https://stackoverflow.com/a/3387362
+- sorting struct list : https://yourbasic.org/golang/how-to-sort-in-go/
+  - https://stackoverflow.com/a/42382736
+  - https://stackoverflow.com/a/29000001
+- time/date formatting : https://stackoverflow.com/a/54314594
+- days between dates: https://yourbasic.org/golang/days-between-dates/
+  - https://stackoverflow.com/a/46298277
+- Adding dates: https://234developer.wordpress.com/2019/09/12/how-to-add-days-to-date-in-golang/
+- collections-functions : https://gobyexample.com/collection-functions
+- String to int: https://stackoverflow.com/a/4279644
+- int to String : https://stackoverflow.com/a/10105983
+- max integer value : https://stackoverflow.com/a/6878625
+- check empty string : https://stackoverflow.com/a/18594463
+- splitting string: https://stackoverflow.com/a/16551613
+  - https://www.educative.io/edpresso/how-to-split-a-string-in-golang
+- pointers and references: https://medium.com/wesionary-team/pointers-and-passby-value-reference-in-golang-a00c8c59b7f1
+- string formatting : https://gobyexample.com/string-formatting
+  - https://pkg.go.dev/fmt
+- handling error messages: https://stackoverflow.com/a/22171548
+- no nil check for struct variables: https://stackoverflow.com/a/25350005
+  - https://stackoverflow.com/a/28447372
+- unit testing : https://www.pullrequest.com/blog/unit-testing-in-go/
+  - https://www.digitalocean.com/community/tutorials/how-to-write-unit-tests-in-go-using-go-test-and-the-testing-package
+- map initialisation: https://stackoverflow.com/a/18342312
+- invoke tests from all packages: https://stackoverflow.com/a/50680626
+- object equivalence : https://stackoverflow.com/a/18211675
+- map iteration: https://bitfieldconsulting.com/golang/map-iteration
+- multiple test methods in single file: https://pkg.go.dev/testing
+- making http post: https://stackoverflow.com/a/24455606
+  - https://blog.logrocket.com/making-http-requests-in-go/
+- spawn server with handle: https://stackoverflow.com/a/40041517
+  - httpserver testing http server: https://quii.gitbook.io/learn-go-with-tests/build-an-application/http-server
+  - https://pkg.go.dev/net/http/httptest
+- context and concurreny: https://gobyexample.com/context
+  - https://blog.golang.org/context
+- round to decimal places: https://yourbasic.org/golang/round-float-2-decimal-places/
+- convert byte to string: https://stackoverflow.com/a/26072966
+- restful testing with httptest and handlers: https://www.newline.co/@kchan/testing-a-go-and-chi-restful-api-route-handlers-part-1--6b105194
+  - https://ieftimov.com/post/testing-in-go-testing-http-servers/
+  - https://antklim.medium.com/testing-http-service-in-go-3b8cb4a3602b
+- clearing golang test cache: https://til.cybertec-postgresql.com/post/2019-11-07-How-to-turn-off-test-caching-for-golang/
