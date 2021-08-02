@@ -194,6 +194,25 @@ func TestPricingStrategyVariedConfigs(tp *testing.T){
     util.AssertEqual(err.Error(), "MatchingLicenceValidityFactor not found!", t)
     util.AssertTrue(licence_factor_range == nil, t)
   })
+
+  tp.Run("TestPricingStrategyVariedConfigsToFindMatchingLicenceValidityFactor-InvalidDate-Senario", func(t *testing.T) {
+    licence := "22-Jan-2020"
+    request.LicenseHeldSince = licence
+    LicenceValidityFactorList := []models.RangeConfig{
+      models.RangeConfig{
+        Start: 0,
+        End: 2,
+        IsEligible: true,
+        Value: 3.0,
+        Label: "<2 years",
+      },
+    }
+
+    licence_factor_range, err := strategies.FindMatchingLicenceValidityFactor(&request, LicenceValidityFactorList)
+  	util.AssertTrue(err != nil, t)
+    util.AssertEqual(err.Error(), "Error wile Parsing LicenseHeldSince date. Error: parsing time \"22-Jan-2020\" as \"2006-01-02\": cannot parse \"an-2020\" as \"2006\"", t)
+    util.AssertTrue(licence_factor_range == nil, t)
+  })
   tp.Run("TestPricingStrategyVariedConfigsToFindMatchingInsuranceGroupFactor-Success-Senario", func(t *testing.T) {
     request.InsuranceGroup = 3
     InsuranceGroupFactorList := []models.RangeConfig{
@@ -278,6 +297,24 @@ func TestPricingStrategyVariedConfigs(tp *testing.T){
     driver_factor_range, err := strategies.FindMatchingDriverAgeFactor(&request, DriverAgeFactorList)
     util.AssertTrue(err != nil, t)
     util.AssertEqual(err.Error(), "MatchingDriverAgeFactor not found!", t)
+    util.AssertTrue(driver_factor_range == nil, t)
+  })
+
+  tp.Run("TestPricingStrategyVariedConfigsToFindMatchingDriverAgeFactor-InvalidDate-Senario", func(t *testing.T) {
+    request.DateOfBirth = "22-Jan-2020"
+    DriverAgeFactorList := []models.RangeConfig{
+      models.RangeConfig{
+        Start: 2,
+        End: 4,
+        IsEligible: true,
+        Value: 2.0,
+        Label: "2-4",
+      },
+    }
+
+    driver_factor_range, err := strategies.FindMatchingDriverAgeFactor(&request, DriverAgeFactorList)
+    util.AssertTrue(err != nil, t)
+    util.AssertEqual(err.Error(), "Error wile Parsing DateOfBirth date. Error: parsing time \"22-Jan-2020\" as \"2006-01-02\": cannot parse \"an-2020\" as \"2006\"", t)
     util.AssertTrue(driver_factor_range == nil, t)
   })
 }

@@ -48,7 +48,10 @@ func (s *Strategy) ApplySubsecuentFactorsToPricing(input *pricingengine.Generate
 
 func (s *Strategy) FindMatchingDriverAgeFactor(input *pricingengine.GeneratePricingRequest, allDriverAgeFactords []models.RangeConfig) (*models.RangeConfig, error) {
   date_of_birth := input.DateOfBirth
-  parse_dob_t,_ := time.Parse("2006-01-02", date_of_birth)
+  parse_dob_t, err := time.Parse("2006-01-02", date_of_birth)
+	if err != nil {
+		return nil, errors.New("Error wile Parsing DateOfBirth date. Error: "+ err.Error())
+	}
   now := time.Now()
   age := int(now.Sub(parse_dob_t).Hours()/(24*30*12))
 	log.Println("Checking the driver factor for date_of_birth=", date_of_birth, " parse_dob_t=", parse_dob_t, " age=", age)
@@ -82,8 +85,11 @@ func (s *Strategy) FindMatchingInsuranceGroupFactor(input *pricingengine.Generat
 
 
 func (s *Strategy) FindMatchingLicenceValidityFactor(input *pricingengine.GeneratePricingRequest, allLicenceValidtyFactors []models.RangeConfig) (*models.RangeConfig, error) {
-	date_of_birth := input.LicenseHeldSince
-  parse_date_t,_ := time.Parse("2006-01-02", date_of_birth)
+	licence_date := input.LicenseHeldSince
+  parse_date_t, err := time.Parse("2006-01-02", licence_date)
+	if err != nil {
+		return nil, errors.New("Error wile Parsing LicenseHeldSince date. Error: "+ err.Error())
+	}
   now := time.Now()
   licence_length := int(now.Sub(parse_date_t).Hours()/(24*30*12))
   for i:= 0; i < len(allLicenceValidtyFactors); i++ {
