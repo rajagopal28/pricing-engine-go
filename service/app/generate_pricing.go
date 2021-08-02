@@ -16,6 +16,11 @@ type App struct{
 
 // GeneratePricing will calculate how much a 'risk' be priced or if they should
 // be denied.
+// GeneratePricing method simply takes the input and peforms input validation/sanitization
+// The pricing value is generated for all the base fare ranges available considering the user input
+// Applies chain of command pattern to strategies that are to be executed based on the configs that are available
+// Inputs ==> ctx context.Context, request *pricingengine.GeneratePricingRequest
+// returns ==> *pricingengine.GeneratePricingResponse, error
 func (a *App) GeneratePricing(ctx context.Context, request *pricingengine.GeneratePricingRequest) (*pricingengine.GeneratePricingResponse, error) {
 	log.Println("Entering GeneratePricing")
 	// Initialise with actual path if not present

@@ -11,6 +11,8 @@ import (
 type FactorMapper struct{}
 
 
+// BaseRateToRangeConfig method will go over the list of  BaseRate and converts them to appropriate RangeConfig
+// returns the list of converted RangeConfig
 func (f *FactorMapper) BaseRateToRangeConfig(baseRates []models.BaseRate) (rangeRates []models.RangeConfig) {
   sort.Slice(baseRates, func(i, j int) bool {
     return baseRates[i].Time < baseRates[j].Time
@@ -26,7 +28,8 @@ func (f *FactorMapper) BaseRateToRangeConfig(baseRates []models.BaseRate) (range
   return result
 }
 
-
+// DriverAgeFactorToRangeConfig method will go over the list of  DriverAgeFactor and converts them to appropriate RangeConfig
+// returns the list of converted RangeConfig
 func (f *FactorMapper) DriverAgeFactorToRangeConfig(ageFactors []models.DriverAgeFactor) (rangeRates []models.RangeConfig) {
   sort.Slice(ageFactors, func(i, j int) bool {
     return ageFactors[i].Age < ageFactors[j].Age
@@ -48,6 +51,9 @@ func (f *FactorMapper) DriverAgeFactorToRangeConfig(ageFactors []models.DriverAg
   return result
 }
 
+
+// InsuranceGroupFactorToRangeConfig method will go over the list of  InsuranceGroupFactor and converts them to appropriate RangeConfig
+// returns the list of converted RangeConfig
 func (f *FactorMapper) InsuranceGroupFactorToRangeConfig(insuranceGroups []models.InsuranceGroupFactor) (rangeRates []models.RangeConfig) {
   result := []models.RangeConfig{}
   for i:= 0; i < len(insuranceGroups); i++ {
@@ -66,6 +72,8 @@ func (f *FactorMapper) InsuranceGroupFactorToRangeConfig(insuranceGroups []model
   return result
 }
 
+// LicenceValidityFactorToRangeConfig method will go over the list of LicenceValidityFactor and converts them to appropriate RangeConfig
+// returns the list of converted RangeConfig
 func (f *FactorMapper) LicenceValidityFactorToRangeConfig(licenceValidities []models.LicenceValidityFactor) (rangeRates []models.RangeConfig) {
   result := []models.RangeConfig{}
   for i:= 0; i < len(licenceValidities); i++ {

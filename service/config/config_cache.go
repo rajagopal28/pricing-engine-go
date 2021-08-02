@@ -16,7 +16,11 @@ type ConfigCache struct{
   LicenceValidityFactorList []models.RangeConfig
 }
 
-
+// Initialise method force Initialises the cache data based on hte Fetcher config that is applied in it
+// It sequentially fetches and applies all the 5 config data
+// BaseFare, DriverAgeFactor, InsuranceGroupFactor, LicenceValidityFactor
+// inputs TTL ==> number of seconds the cache should be valid
+// Returns error based on operation
 func (c *ConfigCache) Initialise(TTL int64) (error) {
   log.Println("Initialising ConfigCache with new TTL: +v", TTL)
   err := c.FetchAndConvertBaseFareList()
@@ -39,7 +43,10 @@ func (c *ConfigCache) Initialise(TTL int64) (error) {
   return nil
 }
 
-
+// Initialise method Initialises the cache data conditioanlly based on the inputs passes to it
+// Along with Fetcher config that is applied in it
+// It then applies the decision and invokes the Initialise method with TTL passed
+// Returns error based on operation
 func (c *ConfigCache) InitialiseWithRefresh(refresh_cache bool, TTL int64) (error) {
   now := time.Now().Unix()
   log.Println("Initialising ConfigCache with Refresh:", refresh_cache, "TimeToLive: ", c.TimeToLive, " Now: ", now)
@@ -49,7 +56,9 @@ func (c *ConfigCache) InitialiseWithRefresh(refresh_cache bool, TTL int64) (erro
   return nil
 }
 
-
+// FetchAndConvertBaseFareList method fetches the BaseFare config, converts to RangeConfig and sets it to the cache
+// All operations are internal and selfcontained withing the cache config instance
+// returns error if any caused during fetching or conversion
 func (c *ConfigCache) FetchAndConvertBaseFareList() (error) {
   log.Println("In FetchAndConvertBaseFareList ")
   var temp []models.BaseRate
@@ -58,7 +67,6 @@ func (c *ConfigCache) FetchAndConvertBaseFareList() (error) {
 		log.Printf("error reading the config file:", err)
 		return err
 	}
-	// println("result length =", len(result))
 	log.Printf("List : %+v", res)
 	temp = res.([]models.BaseRate)
   factorMapper := util.FactorMapper{}
@@ -67,6 +75,9 @@ func (c *ConfigCache) FetchAndConvertBaseFareList() (error) {
   return nil
 }
 
+// FetchAndConvertDriverAgeFactorList method fetches the DriverAgeFactor config, converts to RangeConfig and sets it to the cache
+// All operations are internal and selfcontained withing the cache config instance
+// returns error if any caused during fetching or conversion
 func (c *ConfigCache) FetchAndConvertDriverAgeFactorList() (error) {
   log.Println("In FetchAndConvertDriverAgeFactorList ")
   var temp []models.DriverAgeFactor
@@ -75,7 +86,6 @@ func (c *ConfigCache) FetchAndConvertDriverAgeFactorList() (error) {
 		log.Println("error reading the config file:", err)
 		return err
 	}
-	// println("result length =", len(result))
 	log.Printf("List : %+v", res)
 	temp = res.([]models.DriverAgeFactor)
   factorMapper := util.FactorMapper{}
@@ -84,6 +94,9 @@ func (c *ConfigCache) FetchAndConvertDriverAgeFactorList() (error) {
   return nil
 }
 
+// FetchAndConvertInsuranceGroupFactorList method fetches the InsuranceGroupFactor config, converts to RangeConfig and sets it to the cache
+// All operations are internal and selfcontained withing the cache config instance
+// returns error if any caused during fetching or conversion
 func (c *ConfigCache) FetchAndConvertInsuranceGroupFactorList() (error) {
   log.Println("In FetchAndConvertInsuranceGroupFactorList ")
   var temp []models.InsuranceGroupFactor
@@ -92,7 +105,6 @@ func (c *ConfigCache) FetchAndConvertInsuranceGroupFactorList() (error) {
 		log.Println("error reading the config file: ", err)
 		return err
 	}
-	// println("result length =", len(result))
 	log.Printf("List : %+v", res)
 	temp = res.([]models.InsuranceGroupFactor)
   factorMapper := util.FactorMapper{}
@@ -101,6 +113,9 @@ func (c *ConfigCache) FetchAndConvertInsuranceGroupFactorList() (error) {
   return nil
 }
 
+// FetchAndConvertLicenceValidityFactorList method fetches the LicenceValidityFactor config, converts to RangeConfig and sets it to the cache
+// All operations are internal and selfcontained withing the cache config instance
+// returns error if any caused during fetching or conversion
 func (c *ConfigCache) FetchAndConvertLicenceValidityFactorList() (error) {
   log.Println("In FetchAndConvertLicenceValidityFactorList ")
   var temp []models.LicenceValidityFactor
@@ -109,7 +124,7 @@ func (c *ConfigCache) FetchAndConvertLicenceValidityFactorList() (error) {
     log.Println("error reading the config file: ", err)
     return err
   }
-  // println("result length =", len(result))
+
   log.Printf("List : %+v", res)
   temp = res.([]models.LicenceValidityFactor)
   factorMapper := util.FactorMapper{}

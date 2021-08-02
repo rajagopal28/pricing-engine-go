@@ -12,7 +12,11 @@ type ConfigFetcher struct{
   Path string
 }
 
-
+// ReadFileAndGetAsObject method reads the file in the mentioned path
+// Dynamic conversion of the data fetched to a generic interface helps
+// runtime conversion of the fetched object in a genreic way
+// The casting decision is upto the calling method
+// returns the resultant object or error if any caused during fetching the data document
 func (c *ConfigFetcher) ReadFileAndGetAsObject(filename string, class interface{}) (interface{}, error) {
   log.Println("Entering ReadFileAndGetAsObject")
 	pwd, _ := os.Getwd()

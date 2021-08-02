@@ -20,6 +20,8 @@ type Service struct {
 	Server *http.Server
 }
 
+// Start method takes care of handling the initial configs and starting the server based on the handler endpoints configured
+// The service typically relies on the go-chi and chi middleware libraries in constructing a rest service
 func (s * Service)Start(port string) {
 	r := chi.NewRouter()
 
@@ -38,6 +40,8 @@ func (s * Service)Start(port string) {
 	s.ListenAndServe(":"+port, r)
 }
 
+// ListenAndServe method takes care of starting the server at the given port
+// The service instance also listend to the SIGNAL that typically interprets the Interrupted
 func (s *Service)ListenAndServe(port string, r http.Handler) {
 		log.Println("Starting Server!")
 		s.Server = &http.Server{Addr: port, Handler: r}
@@ -56,7 +60,7 @@ func (s *Service)ListenAndServe(port string, r http.Handler) {
     // Wait for ListenAndServe goroutine to close.
 }
 
-// check and stop the currently running http server
+// Stop method will check and stop the currently running http server
 func (s * Service)Stop() {
 	log.Println("Stopping Server!")
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
