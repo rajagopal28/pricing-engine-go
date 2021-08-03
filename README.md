@@ -23,16 +23,61 @@ The current application is built on top on an existing code as per the [Requirem
 
 
 ## The Approach in solving the problem
-- Single responsibility Priciple :
-- Generalisation and Specialisation :
-- Configurable and plugin code : Decoupling the configuration
+- Single responsibility Principle : Proper structuring of business logics to serve finer and granular purposes will help in greater lengths, hence I have split the data processing accordingly such that components like *ConfigFetcher*, *FactorMapper* and *RPC* have unique responsibilities that are really granular and the handing down of data to other actors also became really smooth and testable.
+- Generalisations and Specialisations : Bringing in *StrategyChain* and *Strategy* method reference was really fun. It totally minimised the boiler plate code by embracing the code reuse and carving out the skeleton that a lot of repeated code to repeatedly apply the subsequent pricing were really brought down to 3 lines as shown under *Chain of Commands*section below.
+- *Configurable and plugin code*: Decoupling the configuration from the implementation along with an `auto expiring cache` like approach is taken in this application considering the fact that fare prices or decision factors in most of the pricing related businesses tend to change often than we usually think.
 - Strategy Pattern :
-- Chain of command pattern :
-- Functional Decomposition :
-- Non-TDD/Implementation first : I am a hard core follower of TDD principles while developing any of the application or business logics. However, due to the lack of experience in go programming language I was not able to follow TDD approach 100%. During the initial spike/experimental faces I just started with the implementation and then jumped in to the respective unit test/functional test later.
-- Test Pyramid
- - Integration testing with httptest
- - Unit test with testing framework
+```go
+	var thirdStrategy = func( resp *pricingengine.PricingItem) (*pricingengine.PricingItem, error) {
+		log.Println("Processing LicenceValidityFactor Stragegy")
+		return strategies.ApplySubsecuentFactorsToPricing(request, resp, licence_factor_range, nil) // final call so no next strategy
+	}
+
+	var secondStrategy = func( resp *pricingengine.PricingItem) (*pricingengine.PricingItem, error) {
+		log.Println("Got Previous Strategy in InsuranceGroupFactor Stragegy data here::", resp)
+		return strategies.ApplySubsecuentFactorsToPricing(request, resp, insurance_factor_range, thirdStrategy)
+	}
+
+	var firstStrategy = func( resp *pricingengine.PricingItem) (*pricingengine.PricingItem, error) {
+		log.Println("Got Previous Strategy in DriverAgeFactor Stragegy data here::", resp)
+		return strategies.ApplySubsecuentFactorsToPricing(request, resp, driver_factor_range, secondStrategy)
+	}
+```
+- Chain of command pattern : One more interesting approach I chose to minimise the lines of code in implementation is to simplify the way the incremental factors are applied on the base price. This model is completely dependant on the configurable model and is totally extendable with really less implementation code. All credits goes to the *method references*/`Function as a data type` approach supported by Go which helped a long way. The actual implemetation of the Chain is completely upto the invoker, however, the chain will continue as long as there is a chain connected to the current one. Code snippet below:
+```go
+if fn != nil {
+  log.Println("Found a chain function, Passing on the result for further computation")
+  return fn(&result)
+}
+```
+- *Functional Decomposition* : As a bi-product of applying the *Single responsibility Principle*, `Functionally decomposing` the data flow became really easy considering the fact that each actor has a `defined`, `highly cohesive` data flow within itself and `low coupling` with other actors in the ecosystem.
+- Non-TDD/Implementation first : I am a hard core follower of *TDD* principles while developing any of the application or business logics. However, due to the lack of experience in go programming language I was not able to follow TDD approach 100%. During the initial spike/experimental faces I just started with the implementation and then jumped in to the respective unit test/functional test later.
+- *Test Pyramid*: I have followed test pyramid starting from *UnitTests --> FunctionalTest --> IntegrationTest* for this project such that all the scenarios are covered.
+ - Integration testing with `httptest`
+ - Unit test with `testing` framework
+- *Dedicated logging*: Logging is one of the crucially best practices among all programming languages. I have used a simplistic logging approach with GoLang's `logging` package.
+- The request response structures: As part of the design it was pointed out to be extra cautious on designing the Request/Response object. Below is the way the GeneratePricing Request and Response object fields are classified.
+```go
+type GeneratePricingRequest struct {
+  DateOfBirth string `json:"date_of_birth"`
+  InsuranceGroup int `json:"insurance_group"`
+  LicenseHeldSince string `json:"license_held_since"`
+}
+
+type GeneratePricingResponse struct {
+	Input GeneratePricingRequest `json:"input"`
+  IsEligible bool `json:"is-eligible"`
+  Message string `json:"message"`
+  PricingList []PricingItem `json:"pricing"`
+}
+
+type PricingItem struct {
+	Premium float64 `json:"premium"`
+  Currency string  `json:"currency"`
+  FareGroup string `json:"fare_group"`
+}
+
+```
 
 ## The Flow
 ## Architecture:
@@ -81,10 +126,9 @@ Content-Type: application/json
               "currency": "£",
               "fare_group": "0.5 hours, Driver Age >26, Insurance Group:9-16, Licence Validity:6"
           },
-          /*
           {....},
           {....},
-          .....  */
+          .....
       ]
 }
 
@@ -93,7 +137,7 @@ Content-Type: application/json
 #### Get current pricing configuration ranges
 ##### Request
 ```http
-GET /statistics HTTP/1.1
+GET /generate_pricing HTTP/1.1
 Host: localhost:3000
 
 
@@ -125,8 +169,8 @@ Content-Type: application/json;charset=UTF-8
             "Value": 0,
             "Label": "Driver Age:0-16"
         },
-        /*{...}
-        ....*/
+        {...}
+        ....
       ],
       "insurance-group-factor": [
           {
@@ -136,8 +180,8 @@ Content-Type: application/json;charset=UTF-8
               "Value": 1,
               "Label": "Insurance Group:1-8"
           },
-          /*{...}
-          ....*/
+          {...}
+          ....
       ],
       "licence-validity-factor": [
         {
@@ -147,8 +191,8 @@ Content-Type: application/json;charset=UTF-8
             "Value": 1.1,
             "Label": "Licence Validity:0-1"
         },
-        /*{...}
-        ....*/
+        {...}
+        ....
       ]
     }
 ```
@@ -280,11 +324,18 @@ ok      pricingengine/test/util 0.449s
 ➜  pricing-engine-go git:(master)
 ```
 
-## Learning
 
 ## Enhancements and Potential Improvements:
-- Improving performance using concurrency. I am always a fan of multi threading and concurrency. However, given that the expected time to complete this task is 4-5 hours and I am totally new to the functional programming aspects of golong I was not able to wrap my head around few of the concurrency concepts like defer, waitgroup and go coroutine execution.
-- Better error handling at some of the places.
+- Improving performance using concurrency. I am a fan of multi-threading and concurrency. However, given that the expected time to complete this task is 4-5 hours and I am totally new to the functional programming aspects of GoLang I was not able to wrap my head around few of the concurrency concepts like `defer`, `wait-group` and `go coroutine` execution all together.
+- Better error handling at some of the places can be done to have better user response. Aspects like `fail fast` or `Circuit Breakers` can be applied to quickly break the chained flow and give defined error messages to the end user.
+
+## Time taken to implement the solution:
+- This solution has been completely implemented within *4-5 hours* of time on top of *+2 hours* to understand the basics of the `GoLang` syntaxes and other programming nuances.
+
+
+## Learning
+- I have mostly worked on OO programming languages like Java and C++, working on a pure functional language like GoLang is really a fun challenge. I learned a lot from the functional perspective and some minute data handling and code structuring thag enabled proper control of data flow.
+- Generalisation and Specialisation of certain aspects like ConfigFetcher and FactoMapper was really interesting learning as well. Applying delegated single responsibility helped a lot with a granular scoped testing and also helped in plugging in and toggle for tests such that the behaviour can be changed at different layers according, kind of similar to DependencyInjection and InversionOfControl aspects in pure Object Oriented languages
 
 ## Setting up the environment
 This application is purely build on goLang. To run this application in your local you need to follow the below steps
