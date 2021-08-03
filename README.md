@@ -43,7 +43,7 @@ The current application is built on top on an existing code as per the [Requirem
 		return strategies.ApplySubsecuentFactorsToPricing(request, resp, driver_factor_range, secondStrategy)
 	}
 ```
-- Chain of command pattern : One more interesting approach I chose to minimise the lines of code in implementation is to simplify the way the incremental factors are applied on the base price. This model is completely dependant on the configurable model and is totally extendable with really less implementation code. All credits goes to the *method references*/`Function as a data type` approach supported by Go which helped a long way. The actual implemetation of the Chain is completely upto the invoker, however, the chain will continue as long as there is a chain connected to the current one. Code snippet below:
+- Chain of command pattern : One more interesting approach I chose to minimise the lines of code in implementation is to simplify the way the incremental factors are applied on the base price. This model is completely dependant on the configurable model and is totally extendable with really less implementation code. All credits goes to the *method references*/`Function as a data type` approach supported by Go which helped a long way. The actual implementation of the Chain is completely upto the invoker, however, the chain will continue as long as there is a chain connected to the current one. Code snippet below:
 ```go
 if fn != nil {
   log.Println("Found a chain function, Passing on the result for further computation")
@@ -334,8 +334,9 @@ ok      pricingengine/test/util 0.449s
 
 
 ## Learning
-- I have mostly worked on OO programming languages like Java and C++, working on a pure functional language like GoLang is really a fun challenge. I learned a lot from the functional perspective and some minute data handling and code structuring thag enabled proper control of data flow.
+- I have mostly worked on OO programming languages like Java and C++, working on a pure functional language like GoLang is really a fun challenge. I learned a lot from the functional perspective and some minute data handling and code structuring that enabled proper control of data flow.
 - Generalisation and Specialisation of certain aspects like ConfigFetcher and FactoMapper was really interesting learning as well. Applying delegated single responsibility helped a lot with a granular scoped testing and also helped in plugging in and toggle for tests such that the behaviour can be changed at different layers according, kind of similar to DependencyInjection and InversionOfControl aspects in pure Object Oriented languages
+- It was really exciting to use OO patterns in a functional programming language like Go. The code looked really clean on brining in the Chain of Commands approach in combination with Strategy pattern that typically revolved around the Function as a datatype concept.
 
 ## Setting up the environment
 This application is purely build on goLang. To run this application in your local you need to follow the below steps
@@ -358,4 +359,4 @@ go test ./test/... -p 1
 
 
 ### References:
-Since this is a beginner/learning project based on golang I had to go through a lot of documentations and references related to syntaxes and approaches in arriving at the actual problem solution. All the references that were really useful during the project working can be found here: [References](./REFERENCES.md)
+Since this is a beginner/learning project based on GoLang I had to go through a lot of documentations and references related to syntaxes and approaches in arriving at the actual problem solution. All the references that were really useful during the project working can be found here: [References](./REFERENCES.md)
